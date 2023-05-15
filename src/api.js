@@ -1,16 +1,22 @@
+const Config = require('./config')
+
 const Api = function(constructor) {
   constructor.prototype.httpClient = async function(reqConfig) {
     try {
-      const response = await fetch("http://localhost:3000/api/v1/decision/interactions/123", {
-        method: "POST",
+      const {url, body, ...rest} = reqConfig
+      const aUrl = new URL(url, Config.get('baseUrl')).href
+      const response = await fetch(aUrl, {
         headers: {
-          "X-token": "apikey"
+          'X-API-KEY': Config.get('apiKey'),
+          'Content-Type': 'application/json'
         },
-        body: {}
+        body: JSON.stringify(body),
+        ...rest
       })
-      return await reponse.json()
+      return await response.json()
     } catch (err) {
       console.error("Error:", err);
+      throw err
     }
   }
   return constructor
