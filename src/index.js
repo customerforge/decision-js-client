@@ -2,6 +2,27 @@ const Interaction = require("./interaction");
 const Profile = require("./profile");
 const Config = require("./config");
 
+const motions = []
+
+/*
+document.addEventListener("mousemove", function(event) {
+  const {pageX, pageY} = event
+  const lastMotion = motions[motions.length - 1]
+  if(!lastMotion) {
+    motions.push({x: pageX, y: pageY, type: 'mousemove', timestamp: Date.now(), velocity: 0})
+  }
+  if(lastMotion) {
+    const {x, y, timestamp} = lastMotion
+    const distance = Math.sqrt(Math.pow(pageX - x, 2) + Math.pow(pageY - y, 2))
+    if(distance > 30) {
+      const now = Date.now()
+      const velocity = distance / (now - timestamp) * 1000
+      motions.push({x: pageX, y: pageY, type: 'mousemove', timestamp: now, velocity: Math.round(velocity)})
+    }
+  }
+});
+*/
+
 const JourneySense = function(apiKey, options = {}) {
   const {socketUrl, baseUrl} = options
   this.socketUrl = socketUrl || Config.get('socketUrl')
@@ -13,8 +34,10 @@ const JourneySense = function(apiKey, options = {}) {
     socketUrl: this.socketUrl
   })
   this.profileId = null
+  this.user_id = null
   this.ws = this._ws(apiKey)
 }
+
 JourneySense.prototype._ws = function(apiKey, profileId) {
   let url = new URL(this.socketUrl)
   const data = {apiKey, ...(profileId) && {profileId}}
@@ -36,15 +59,16 @@ JourneySense.prototype.track = async function(event) {
 }
 /**
  * Exchange a user_id with a profile identifier
- * @param {string} user_id - The unique user identifier in your system
+ * @param {string} user_id - The unique user identifier in your system. If not provided, a random identifier will be generated.
  * @param {string} segment_id - segment id
  * @param {Object} [properties={}] - User properties
  * @returns {string} profileId - User unique identifier in Decision
  */
-JourneySense.prototype.identify = async function(user_id, segmentId, user_properties = {}) {
+JourneySense.prototype.identify = async function(user_id, segment, user_properties = {}) {
   const P = new Profile();
-  const profile = await P.identify(user_id, segmentId, user_properties)
+  const profile = await P.identify(user_id || this.user_id, segment, user_properties)
   this.profileId = profile._id
+  this.user_id = profile.user_id
   this._ws(this.apiKey, this.profileId)
   return this.profileId
 };

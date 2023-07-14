@@ -1,4 +1,4 @@
-const Api = require('./api')
+const Api = require('./api');
 
 const Interaction = function(profileId) {
   this.profileId = profileId

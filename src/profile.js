@@ -3,7 +3,7 @@ const Api = require('./api')
 const Profile = function(profileId) {
   this.profileId = profileId
 }
-Profile.prototype.identify = async function(user_id, segmentId, user_properties) {
+Profile.prototype.identify = async function(user_id, segment, user_properties) {
   if(!user_id) {
     throw new Error("user_id is missing")
   }
@@ -13,7 +13,7 @@ Profile.prototype.identify = async function(user_id, segmentId, user_properties)
     body: {
       user_id,
       user_properties,
-      ...(segmentId ? {segmentId} : null)
+      ...(segment ? {segment} : null)
     }
   });
   this.profileId = profile._id
