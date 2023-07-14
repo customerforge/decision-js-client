@@ -2,9 +2,12 @@
   "name": "@customerforgejs/decision-js-client",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
+  "files": [
+    "src"
+  ],
   "scripts": {
-    "build": "webpack",
+    "build": "webpack --mode=production",
     "serve": "yarn build && http-server -c-1",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,7 +15,7 @@
     "type": "git",
     "url": "git+ssh://git@github.com/customerforge/decision-js-client.git"
   },
-  "author": "",
+  "author": "Leo Levins <leo.levins@proton.me>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/customerforge/decision-js-client/issues"
