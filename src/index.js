@@ -60,7 +60,7 @@ JourneySense.prototype.track = async function(event) {
 /**
  * Exchange a user_id with a profile identifier
  * @param {string} user_id - The unique user identifier in your system. If not provided, a random identifier will be generated.
- * @param {string} segment_id - segment id
+ * @param {Object} segment - segment
  * @param {Object} [properties={}] - User properties
  * @returns {string} profileId - User unique identifier in Decision
  */
