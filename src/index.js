@@ -45,7 +45,11 @@ JourneySense.prototype._ws = function(apiKey, profileId) {
   if(this.ws) {
     this.ws.close()
   }
-  this.ws = new WebSocket(url);
+  if(this.socketUrl !== '') {
+    this.ws = new WebSocket(url);
+  } else {
+    this.ws = null
+  }
   return this.ws
 }
 /**

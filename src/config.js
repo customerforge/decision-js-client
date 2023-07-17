@@ -1,5 +1,5 @@
-const API_URL = "http://localhost:3000/api/v1/decision/"
-const SOCKET_URL = "ws://localhost:8080"
+const API_URL = "https://decision-api-dot-customerforge-prod.ts.r.appspot.com/api/v1/decision/"
+const SOCKET_URL = ""
 
 const Config = function (defaults = {}) {
   return {
