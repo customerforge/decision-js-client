@@ -8,7 +8,7 @@ Profile.prototype.identify = async function(user_id, segment, user_properties) {
     url: 'profiles/identify',
     method: 'POST',
     body: {
-      ...(user_id ? {user_id} : null)
+      ...(user_id ? {user_id} : null),
       user_properties,
       ...(segment ? {segment} : null)
     }
