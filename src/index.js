@@ -35,7 +35,11 @@ const JourneySense = function(apiKey, options = {}) {
   })
   this.profileId = null
   this.user_id = null
-  this.ws = this._ws(apiKey)
+  if(this.socketUrl === '') {
+    this.ws = null
+  } else {
+    this.ws = this._ws(apiKey)
+  }
 }
 
 JourneySense.prototype._ws = function(apiKey, profileId) {
@@ -44,11 +48,6 @@ JourneySense.prototype._ws = function(apiKey, profileId) {
   url.searchParams.set('q', encodeURIComponent(btoa(JSON.stringify(data))))
   if(this.ws) {
     this.ws.close()
-  }
-  if(this.socketUrl !== '') {
-    this.ws = new WebSocket(url);
-  } else {
-    this.ws = null
   }
   return this.ws
 }
@@ -83,11 +82,13 @@ JourneySense.prototype.identify = async function(user_id, segment, user_properti
  */
 JourneySense.prototype.recommend = function(item_id) {}
 JourneySense.prototype.onJourneyCompletion = function(handler, options) {
+  if (!this.ws) return;
   this.ws.addEventListener("message", (event) => {
     handler(JSON.parse(event.data))
   });
 }
 JourneySense.prototype.onDestinationResponse = function(handler, options) {
+  if (!this.ws) return;
   this.ws.addEventListener("message", (event) => {
     handler(JSON.parse(event.data))
   });
