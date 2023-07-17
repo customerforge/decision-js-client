@@ -35,14 +35,13 @@ const JourneySense = function(apiKey, options = {}) {
   })
   this.profileId = null
   this.user_id = null
-  if(this.socketUrl === '') {
-    this.ws = null
-  } else {
-    this.ws = this._ws(apiKey)
-  }
+  this.ws = this._ws(apiKey)
 }
 
 JourneySense.prototype._ws = function(apiKey, profileId) {
+  if(this.socketUrl === '') {
+    return null
+  }
   let url = new URL(this.socketUrl)
   const data = {apiKey, ...(profileId) && {profileId}}
   url.searchParams.set('q', encodeURIComponent(btoa(JSON.stringify(data))))
